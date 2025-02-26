@@ -33,3 +33,13 @@
     }
   ```
 
+---
+title: The Lottery Ticket
+author: Anton C.
+date: "2013-03-15 15:00"
+template: article.jade
+tags:
+  - Fiction
+  - Russian
+
+---
