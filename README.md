@@ -5,12 +5,12 @@
 
 ## Добавление нового микрофронтенда для работы:
 
-1. **Настройка конфигурации микрофронтенда 
+1. **Настройка конфигурации микрофронтенда** 
 
-  - В созданном приложении мирофронта устанавливаем порт и хост, где он будет крутиться в файле `angular.json` (пример для локальной работы)
+  - В созданном приложении микрофронта устанавливаем порт и хост, где он будет крутиться в файле `angular.json` (пример для локальной работы)
 
   ```javascript
-    /** angular.json */ 
+    /** angular.json в приложении микрофронта */ 
     {
       ...
       "projects": {
@@ -36,7 +36,7 @@
   - В конфигурации webpack указываем какие компоненты и модули отдает микрофронт:
 
   ```javascript
-    /** webpack.config.js */
+    /** webpack.config.js в приложении микрофронта */
     const {
       shareAll,
       withModuleFederationPlugin,
@@ -59,4 +59,53 @@
         }),
       },
     });
+  ```
+
+  **ВАЖНО: надо следить за совпадением версий библиотек в микрофронте и shell-приложении**
+
+2. **Добавление данных о новом микрофронтенде в MicrofrontendsStore**
+  В данный момент все файлы для организации работы с микрофронтендами находятся в библиотеке `"@evolenta/processes-module"`
+
+  - Нужно дополнить enum `RemoteComponents` названиями новых удаленных компонентов:
+
+  ```javascript
+    export enum RemoteComponents {
+      ...
+      EXAMPLE_REMOTE_COMPONENT = 'ExampleRemoteComponent',
+      SOME_OTHER_REMOTE_COMPONENT = 'SomeOtherRemoteComponent',
+    }
+  ```
+  
+  - Нужно добавить данные о новом микрофронтенде в константу `data`, которую `MicrofrontendsStore` использует в качестве источника данных:
+
+  ```javascript
+  export const data: Microfrontend[] = [
+    {
+        webpackMfeName: 'modeler-app',
+        loadPath: 'http://localhost:4202/remoteEntry.js',
+        modules: [
+            /**
+             * Данные нужны для создания константы, передаваемой root-приложением по DI под токеном MICROFRONTENDS_TOKEN
+             */
+            {
+                uniqueKey: 'microfrontend',
+                selectName: 'Демо микрофронт',
+                exposedModule: 'Module',
+                entryPoint: 'Mfe1Module',
+            },
+        ],
+        components: [
+            {
+                uniqueKey: RemoteComponents.EXAMPLE_REMOTE_COMPONENT,
+                /** Внимание! название компонента из mf указывается без "./" в отличие от ключа exposes в самом микрофронте */
+                exposedModule: 'Component1',
+            },
+            {
+                uniqueKey: RemoteComponents.SOME_OTHER_REMOTE_COMPONENT,
+                exposedModule: 'Component2',
+            },
+        ],
+    },
+  ];
+
   ```
