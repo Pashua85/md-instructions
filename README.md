@@ -9,15 +9,13 @@
 
   - В созданном приложении мирофронта устанавливаем порт и хост, где он будет крутиться в файле `angular.json` (пример для локальной работы)
 
-  [//]: <> (This is also a comment.)
-
-  ```json
+  ```javascript
     /** angular.json */ 
     {
       ...
       "projects": {
         "example-mf-app": {
-          [//]: <> (This is also a comment.)
+          ...
           "architect": {
             ...
             "serve": {
@@ -34,14 +32,3 @@
       }
     }
   ```
-
----
-title: The Lottery Ticket
-author: Anton C.
-date: "2013-03-15 15:00"
-template: article.jade
-tags:
-  - Fiction
-  - Russian
-
----
