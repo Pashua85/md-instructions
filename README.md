@@ -86,7 +86,8 @@
         loadPath: 'http://localhost:4202/remoteEntry.js',
         modules: [
             /**
-             * Данные нужны для создания константы, передаваемой root-приложением по DI под токеном MICROFRONTENDS_TOKEN
+             * Данные нужны для создания константы, передаваемой root-приложением 
+             * по DI под токеном MICROFRONTENDS_TOKEN 
              */
             {
                 uniqueKey: 'microfrontend',
@@ -98,7 +99,8 @@
         components: [
             {
                 uniqueKey: RemoteComponents.EXAMPLE_REMOTE_COMPONENT,
-                /** Внимание! название компонента из mf указывается без "./" в отличие от ключа exposes в самом микрофронте */
+                /** Внимание! название компонента из mf указывается без "./" 
+                 * в отличие от ключа exposes в самом микрофронте */
                 exposedModule: 'Component1',
             },
             {
