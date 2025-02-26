@@ -32,3 +32,31 @@
       }
     }
   ```
+
+  - В конфигурации webpack указываем какие компоненты и модули отдает микрофронт:
+
+  ```javascript
+    /** webpack.config.js */
+    const {
+      shareAll,
+      withModuleFederationPlugin,
+    } = require("@angular-architects/module-federation/webpack");
+
+    module.exports = withModuleFederationPlugin({
+      name: "modeler-app",
+
+      exposes: {
+        './MyModule': './src/app/my-module/my-module.module.ts',
+        './Component1': './src/app/component1/component1.component.ts',
+        './Component2': './src/app/component2/component2.component.ts',
+      },
+
+      shared: {
+        ...shareAll({
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: "auto",
+        }),
+      },
+    });
+  ```
