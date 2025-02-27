@@ -67,9 +67,10 @@
 
   В данный момент все файлы для организации работы с микрофронтендами находятся в библиотеке `"@evolenta/processes-module"`
 
-1. **Нужно дополнить enum `RemoteComponents` названиями новых удаленных компонентов:**
+1. **Дополнить enum `RemoteComponents` названиями новых удаленных компонентов:**
 
   ```javascript
+    /** projects/processes-module/src/mf-store/enums/remote.component.enum.ts */
     export enum RemoteComponents {
       ...
       EXAMPLE_REMOTE_COMPONENT = 'ExampleRemoteComponent',
@@ -77,9 +78,10 @@
     }
   ```
   
-2. **Нужно добавить данные о новом микрофронтенде в константу `data`, которую `MicrofrontendsStore` использует в качестве источника данных:**
+2. **Добавить данные о новом микрофронтенде в константу `data`, которую `MicrofrontendsStore` использует в качестве источника данных:**
 
   ```javascript
+  /** projects/processes-module/src/mf-store/data.ts */
   export const data: Microfrontend[] = [
     {
         webpackMfeName: 'modeler-app',
@@ -111,4 +113,22 @@
     },
   ];
 
+  ```
+
+3. **Указать входные данные удаленных компонентов и их типы в интерфейсе `ComponentInputMap`:**
+
+  В случае отсутствия инпутов у компоненте передать в `ComponentInputMap` пустой объект
+
+  ```javascript
+  import { RemoteComponents } from '../enums';
+
+  /** Входные параметры для компонентов */
+  export interface ComponentInputMap {
+      [RemoteComponents.EXAMPLE_REMOTE_COMPONENT]: {
+          model: any;
+          readonly: boolean;
+          changeType: boolean;
+      },
+      [RemoteComponents.SOME_OTHER_REMOTE_COMPONENT]: {}
+  }
   ```
