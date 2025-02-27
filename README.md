@@ -272,6 +272,7 @@
                 onGetResult: this.onResultRemote.bind(this),
             },
           });
+          ...
         } catch (error) {
           console.error('Не удалось подключить микрофронтенд', error);
         }
@@ -279,4 +280,58 @@
     }
     ...
   ```
+
+5. **При закрытии удаленного компонента нужно вызвать метод `destroyRemote` у сервиса**
+
+  ```javascript
+    /** example.component.ts */
+
+    ...
+    public onCloseRemote(): void {
+      this.showRemoteComponent = false;
+      this._mfRemoteService.destroyRemote(RemoteComponents.EXAMPLE_REMOTE_COMPONENT);
+      ...
+    }
+    ...
+  ```
+
+6. **Хорошей практикой будет сделать бэкап на случай отсутствия в доступе нужного микрофротенда**
+
+  ```javascript
+  /** example.component.ts */
+
+  export class ExampleComponent {
+    ...
+    public showRemoteErrorBackup = false;
+    ...
+    public async openRemoteComponent: Promise<void> {
+      ...
+      try {
+        const isRemoteAdded = await this._mfRemoteService.addRemoteComponent({
+          ...
+        });
+        this.showRemoteErrorBackup = !isRemoteAdded;
+      } catch (error) {
+        console.error('Не удалось подключить микрофронтенд', error);
+        this.showRemoteErrorBackup = true;
+      }
+    }
+
+    public onCloseRemote(): void {
+      ...
+      this.showRemoteErrorBackup = false;
+    }
+  }
+  ```
+
+  ```javascript
+  /** example.component.html */
+    ...
+      <div *ngIf="showRemoteComponent">
+        <ng-container #placeholder></ng-container>
+        <div *ngIf="showRemoteErrorBackup">This is remote backup</div.
+      </div
+    ...
+  ```
+
 
