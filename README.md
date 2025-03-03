@@ -1,6 +1,6 @@
 # инструкция по работе с микрофронтендами
 
-Все данные о работе с микрофронтами хранятся в классе `MicrofrontendsStore`, который доступен для импорта по пути `@evolenta/processes-module/mf-store`.
+Все данные о работе с микрофронтами хранятся в классе `MicrofrontendsStore`, который доступен для импорта по пути `@evolenta/mfe-common/mf-store`.
 
 
 ## Добавление нового микрофронтенда для работы:
@@ -65,12 +65,12 @@
 
 ## Добавление данных о новом микрофронтенде в MicrofrontendsStore
 
-  В данный момент все файлы для организации работы с микрофронтендами находятся в библиотеке `"@evolenta/processes-module"`
+  В данный момент все файлы для организации работы с микрофронтендами находятся в библиотеке `"@evolenta/mfe-common"`
 
 1. **Дополнить enum `RemoteComponents` названиями новых удаленных компонентов:**
 
   ```javascript
-    /** projects/processes-module/src/mf-store/enums/remote.component.enum.ts */
+    /** projects/mfe-common/src/mf-store/enums/remote.component.enum.ts */
     export enum RemoteComponents {
       ...
       EXAMPLE_REMOTE_COMPONENT = 'ExampleRemoteComponent',
@@ -81,7 +81,7 @@
 2. **Добавить данные о новом микрофронтенде в константу `data`, которую `MicrofrontendsStore` использует в качестве источника данных:**
 
   ```javascript
-  /** projects/processes-module/src/mf-store/data.ts */
+  /** projects/mfe-common/src/mf-store/data.ts */
   export const data: Microfrontend[] = [
     {
         webpackMfeName: 'modeler-app',
@@ -121,7 +121,7 @@
   В случае отсутствия инпутов у компонента передать в `ComponentInputMap` пустой объект.
 
   ```javascript
-  /** projects/processes-module/src/mf-store/interfaces/component-input-map.interface.ts */
+  /** projects/mfe-common/src/mf-store/interfaces/component-input-map.interface.ts */
   import { RemoteComponents } from '../enums';
 
   /** Входные параметры для компонентов */
@@ -143,7 +143,7 @@
 
   ```javascript
     /** Обработчики выходных событий компонента */
-    /** projects/processes-module/src/mf-store/interfaces/component-output-map.interface.ts */
+    /** projects/mfe-common/src/mf-store/interfaces/component-output-map.interface.ts */
     export interface ComponentOutputHandlersMap {
       ...
       [RemoteComponents.EXAMPLE_REMOTE_COMPONENT]: {
@@ -165,7 +165,7 @@
   ```javascript
     /** extra-webpack.config.ts */
     const { withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack');
-    const { MicrofrontendsStore } = require('@evolenta/processes-module/mf-store');
+    const { MicrofrontendsStore } = require('@evolenta/mfe-common/mf-store');
 
     const mfStore = new MicrofrontendsStore();
     const remotes = mfStore.getWebpackConfig() ?? {}; 
@@ -182,7 +182,7 @@
   ```javascript
     /** app.module.ts */
     import { MICROFRONTENDS_TOKEN } from '@evolenta/core';
-    import { MicrofrontendsStore } from '@evolenta/processes-module/mf-store';
+    import { MicrofrontendsStore } from '@evolenta/mfe-common/mf-store';
 
     const mfStore = new MicrofrontendsStore();
     const mfModules = mfStore.getAngularModules();
@@ -229,7 +229,7 @@
 
   ```javascript
   /** example.component.ts */
-    import { MfRemoteService } from '@evolenta/processes-module';
+    import { MfRemoteService } from '@evolenta/mfe-common';
 
     export class ExampleComponent {
       ...
